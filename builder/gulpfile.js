@@ -12,8 +12,8 @@ const gulp = require('gulp'),
             gulp_sourcemaps  = require('gulp-sourcemaps'),
             gulp_notify = require('gulp-notify'),
             gulp_clean = require('gulp-clean'),
-            gulp_browsersync = require('browser-sync').create();
-            gulp_reload = gulp_browsersync.reload;
+            gulp_browsersync = require('browser-sync').create(),
+
 
         // CSS
              gulp_sass  = require('gulp-sass'),
@@ -21,6 +21,8 @@ const gulp = require('gulp'),
              gulp_cssnano  = require('gulp-cssnano'),
 
            //JS
+            gulp_babel = require('gulp-babel'),
+            es2015 = require('babel-preset-es2015'),
             gulp_uglify=require('gulp-uglify'),
 
             // IMAGES
@@ -39,6 +41,11 @@ const gulp = require('gulp'),
   gulp.task('default', gulp.series(clean, gulp.parallel(browsersync,fonts,sass,js_html,images,watch), () => {
 
   }));
+
+function gulp_reload(done) {
+    gulp_browsersync.reload()
+    done();
+}
 
   // WATCH FILES CHANGE
   function watch() {
@@ -96,12 +103,15 @@ function clean() {
   }
 
   // All js --> One js --> Uglify
+
+var chainjs = gulp_lazypipe().pipe(gulp_babel, {presets:[es2015]}).pipe(gulp_uglify)
   function js_html() {
       return gulp.src(config.src+'*.html')
           .pipe(gulp_useref({}, gulp_lazypipe().pipe(gulp_sourcemaps.init, { loadMaps: true })))
+
           .pipe(gulp_if('*.js',
-              gulp_uglify()
-      ))
+             chainjs()
+          ))
           .pipe(gulp_sourcemaps.write('maps'))
           .pipe(gulp.dest(config.dist))
           .pipe(gulp_notify('JS compiled/HTML updated'));
