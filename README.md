@@ -1,4 +1,4 @@
-# [Snake][https://antoinemoues.github.io/snake/
+# [Snake](https://antoinemoues.github.io/snake/)
 
 A snake created for class
 
@@ -10,7 +10,7 @@ A snake created for class
 
 ## To-do
 
-- [] 2 Players
-- [] Online muti-players
+- [ ] 2 Players
+- [ ] Online muti-players
 
-Done with this [static-template][https://github.com/joZephhh/static-template]
+Done with this [static-template](https://github.com/joZephhh/static-template)
