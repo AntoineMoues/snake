@@ -1,20 +1,27 @@
 function game() {
   var snake = function(cross) {
 
+    // Pixel size, size of grid case
     this.size = 15;
 
+    // Use to create a non-real grid
     this.x = Math.floor(Math.random()*(window.innerWidth/this.size))*this.size;
     this.y = Math.floor(Math.random()*(window.innerHeight/this.size))*this.size;
 
+    // Arrays which contains snake positions
     this.posX = [this.x];
     this.posY = [this.y];
 
+
     this.backgroundColor = 'red';
 
+    // Controls cross
     this.cross = cross;
 
+    // A pos will gain his own size to grow
     this.speed = this.size;
 
+    // At start, the snake will go to his right
     this.direction = 'right';
 
     this.div = new Array();
@@ -80,10 +87,12 @@ function game() {
         for(var i=0; i<this.posX.length-1; i++){
           if(this.posX.length-1>0){
             if(this.posX[this.posX.length-1] === this.posX[i] && this.posY[this.posY.length-1] === this.posY[i]){
-              window.alert('t\'es nul');
-              window.location.reload();
+              this.lose();
             }
           }
+        }
+        if(this.posX[this.posX.length-1] > window.innerWidth || this.posY[this.posY.length-1] > window.innerHeight || this.posX[this.posX.length-1] < 0 || this.posY[this.posY.length-1] < 0){
+          this.lose();
         }
       }
     }
@@ -96,6 +105,14 @@ function game() {
        return false;
      }
     }
+
+    this.lose = function() {
+      window.alert('Perdu, votre score est de ' + this.posX.length);
+      window.location.reload();
+    }
+
+    this.update();
+    this.move();
   }
 
   var food = function() {
@@ -128,13 +145,12 @@ function game() {
 
       this.show();
     }
+
+    this.show();
   }
 
   var zqsd = [122, 100, 113, 115];
   var fruit = new food();
   var first_snake = new snake(zqsd);
-  fruit.show();
-  first_snake.update();
-  first_snake.move();
 }
 game();
